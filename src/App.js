@@ -27,7 +27,6 @@ class App extends React.Component{
   }
 
   addToy=(toy)=>{
-    console.log(toy)
     fetch('http://localhost:3001/toys',{
       method: "POST",
       headers:{
@@ -38,11 +37,32 @@ class App extends React.Component{
     })
     .then(resp => resp.json())
     .then(data =>{
-      // this.setState({
-      //   toyObjects: this.state.toyObjects.push(data)
-      // })
+      console.log("New Story", data)
+      this.setState({
+        toyObjects:[...this.state.toyObjects, data]
+      })
     })
-
+    this.handleClick()
+  }
+  
+  deleteToy = (toy) => {
+    fetch(`http://localhost:3001/toys/${parseInt(toy.id)}`,{
+      method: "DELETE",
+      headers:{
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+      },
+      body:JSON.stringify(toy)
+    })
+    .then(resp => resp.json())
+    .then(data =>{
+      let findIndex = this.state.toyObjects.indexOf(toy)
+      this.state.toyObjects.splice(findIndex, 1)
+      console.log(findIndex)
+      this.setState({
+        toyObjects:[...this.state.toyObjects]
+      })
+    })
   }
 
   render(){
@@ -53,7 +73,7 @@ class App extends React.Component{
         <div className="buttonContainer">
           <button onClick={this.handleClick}> Add a Toy </button>
         </div>
-        <ToyContainer toys={this.state.toyObjects}/>
+        <ToyContainer toys={this.state.toyObjects} deleteToy={this.deleteToy}/>
       </>
     );
   }
