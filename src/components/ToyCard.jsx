@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
 class ToyCard extends Component {
+  handleClick = () =>{
+    this.props.deleteToy(this.props.toy)
+  }
 
   render() {
     return (
@@ -9,7 +12,7 @@ class ToyCard extends Component {
         <img src={this.props.toy.image} alt={this.props.toy.name} className="toy-avatar" />
         <p>{this.props.toy.likes} Likes </p>
         <button className="like-btn">Like {'<3'}</button>
-        <button className="del-btn">Donate to GoodWill</button>
+        <button className="del-btn" onClick={this.handleClick}>Donate to GoodWill </button>
       </div>
     );
   }
